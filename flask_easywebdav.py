@@ -20,7 +20,7 @@ class EasyWebDAV(object):
     # Not using this yet
     # def init_app(self, app):
     #     # No default connection for easywebdav
-    #     # app.config.setdefault('SQLITE3_DATABASE', ':memory:')
+    #     # app.config.setdefault(??)
     #     # Use the newstyle teardown_appcontext if it's available,
     #     # otherwise fall back to the request context
     #     if hasattr(app, 'teardown_appcontext'):
