@@ -30,7 +30,7 @@ class EasyWebDAV(object):
         webdav_conf = current_app.config['WEBDAV_SERVER']
         
         if webdav_conf == 'empty':
-            raise Error('WEBDAV_SERVER is not configured')
+            raise Exception('WEBDAV_SERVER is not configured')
 
         webdav = easywebdav.connect(host=webdav_conf['host'], 
                                     username=webdav_conf['username'], 
