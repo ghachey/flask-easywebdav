@@ -18,8 +18,7 @@ class EasyWebDAV(object):
             self.init_app(app)
 
     def init_app(self, app):
-        # No default connection for easywebdav
-        app.config.setdefault('WEBDAV_SERVER', current_app.config['WEBDAV_SERVER'])
+        app.config.setdefault('WEBDAV_SERVER', 'empty')
         # Use the newstyle teardown_appcontext if it's available,
         # otherwise fall back to the request context
         if hasattr(app, 'teardown_appcontext'):
@@ -29,19 +28,24 @@ class EasyWebDAV(object):
 
     def connect(self):
         webdav_conf = current_app.config['WEBDAV_SERVER']
-        # TODO: Check config
-        webdav = webdav.connect(host, 
-                                username=webdav_conf['username'], 
-                                password=webdav_conf['password'],
-                                protocol=webdav_conf['protocol'], 
-                                port=webdav_conf['port'], 
-                                verify_ssl=webdav_conf['verify_ssl'])
+        
+        if webdav_conf == 'empty':
+            raise Error('WEBDAV_SERVER is not configured')
+
+        webdav = easywebdav.connect(host=webdav_conf['host'], 
+                                    username=webdav_conf['username'], 
+                                    password=webdav_conf['password'],
+                                    protocol=webdav_conf['protocol'], 
+                                    port=webdav_conf['port'], 
+                                    verify_ssl=webdav_conf['verify_ssl'])
         return webdav
 
     def teardown(self, exception):
         ctx = stack.top
-        if hasattr(ctx, 'sqlite3_db'):
-            ctx.sqlite3_db.close()
+        if hasattr(ctx, 'webdav_endpoint'):
+            # Is there any tearing needed ?
+            #ctx.webdav_endpoint.close()
+            pass
 
     @property
     def connection(self):
