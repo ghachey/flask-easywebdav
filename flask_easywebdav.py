@@ -17,16 +17,15 @@ class EasyWebDAV(object):
         if app is not None:
             self.init_app(app)
 
-    # Not using this yet
-    # def init_app(self, app):
-    #     # No default connection for easywebdav
-    #     # app.config.setdefault(??)
-    #     # Use the newstyle teardown_appcontext if it's available,
-    #     # otherwise fall back to the request context
-    #     if hasattr(app, 'teardown_appcontext'):
-    #         app.teardown_appcontext(self.teardown)
-    #     else:
-    #         app.teardown_request(self.teardown)
+    def init_app(self, app):
+        # No default connection for easywebdav
+        app.config.setdefault('WEBDAV_SERVER', current_app.config['WEBDAV_SERVER'])
+        # Use the newstyle teardown_appcontext if it's available,
+        # otherwise fall back to the request context
+        if hasattr(app, 'teardown_appcontext'):
+            app.teardown_appcontext(self.teardown)
+        else:
+            app.teardown_request(self.teardown)
 
     def connect(self):
         webdav_conf = current_app.config['WEBDAV_SERVER']
