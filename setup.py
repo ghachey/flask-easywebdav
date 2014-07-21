@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='Flask-EasyWebDAV',
-    version='1.0',
+    version='0.1',
     url='http://github.com/ghachey/flask-easywebdav',
     license='MIT',
     author='Ghislain Hachey',
